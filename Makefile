@@ -26,5 +26,8 @@ fmt:
 lint:
 	$(PYLINT) main.py ./${PACKAGE}
 
-dev:
-	${UVICORN} main:app --reload
+build:
+	docker build . -t ubademy.gateway
+
+run:
+	docker run -p 8000:8000 ubademy.gateway
