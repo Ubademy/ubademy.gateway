@@ -43,4 +43,4 @@ async def catch_all(request: Request, response: Response, full_path: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
-    return "done"
+    return service_response.json()
