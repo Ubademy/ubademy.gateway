@@ -15,8 +15,7 @@ update:
 	$(POETRY) update
 	$(POETRY_EXPORT)
 
-test: install  
-	$(MYPY) main.py ./${PACKAGE}/
+test: install
 	$(PYTEST) -vv
 
 fmt:
@@ -28,6 +27,3 @@ lint:
 
 build:
 	docker build . -t ubademy.gateway
-
-run:
-	docker run -p 8000:8000 ubademy.gateway

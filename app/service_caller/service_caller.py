@@ -1,18 +1,20 @@
 import logging
+from typing import List, Optional
 
 import requests
+from requests import Session
 from starlette.datastructures import Headers
 from starlette.requests import Request
 
 logger = logging.getLogger(__name__)
 
-useful_headers = []
+good_headers: List[str] = []
 
 
-def get_headers_from_request(h: Headers) -> dict:
+def get_headers_from_request(h: Headers) -> Optional[dict]:
     headers = {}
     for i in h.keys():
-        if i in useful_headers:
+        if i in good_headers:
             headers[i] = h.get(i)
     if len(headers.keys()) == 0:
         headers = None
@@ -22,45 +24,40 @@ def get_headers_from_request(h: Headers) -> dict:
 
 class ServiceCaller:
     def __init__(
-            self,
-            service_url: str,
-            path: str,
+        self,
+        service_url: str,
+        path: str,
+        session: Optional[Session] = requests.Session(),
     ):
         self.headers = None
-        self.body = None
-        self.service_url = service_url
-        self.path = path
+        self.data = None
+        self.session = session
+        self.url = service_url + path
         self.requests = {
-            "GET": ServiceCaller.get,
-            "POST": ServiceCaller.post,
-            "PUT": ServiceCaller.put,
-            "DELETE": ServiceCaller.delete,
+            "GET": self.get,
+            "POST": self.post,
+            "PUT": self.put,
+            "DELETE": self.delete,
         }
 
     async def call_with_request(self, request: Request):
         func = self.requests.get(request.method)
-        data = await request.json()
-        headers = get_headers_from_request(request.headers)
-        url = self.service_url + self.path
+        self.headers = get_headers_from_request(request.headers)
+        try:
+            self.data = await request.json()
+        except:
+            self.data = None
 
-        return func(headers, url, data)
+        return func()
 
-    @classmethod
-    def get(cls, headers: dict, url: str, data: dict):
-        logger.info(url)
-        return requests.get(url, headers=headers, json=data)
+    def get(self):
+        return self.session.get(self.url, headers=self.headers, json=self.data)
 
-    @classmethod
-    def post(cls, headers: dict, url: str, data: dict):
-        logger.info(url)
-        return requests.post(url, headers=headers, json=data)
+    def post(self):
+        return self.session.post(self.url, headers=self.headers, json=self.data)
 
-    @classmethod
-    def put(cls, headers: dict, url: str, data: dict):
-        logger.info(url)
-        return requests.put(url, headers=headers, json=data)
+    def put(self):
+        return self.session.put(self.url, headers=self.headers, json=self.data)
 
-    @classmethod
-    def delete(cls, headers: dict, url: str, data: dict):
-        logger.info(url)
-        return requests.delete(url, headers=headers, json=data)
+    def delete(self):
+        return self.session.delete(self.url, headers=self.headers, json=self.data)
