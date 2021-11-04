@@ -1,57 +1,39 @@
-# ubademy.service.pytemplate
-[![codecov](https://codecov.io/gh/Ubademy/ubademy.service.courses/branch/master/graph/badge.svg?token=T726IGKKWO)](https://codecov.io/gh/Ubademy/ubademy.service.courses) [![Tests](https://github.com/Ubademy/ubademy.service.courses/actions/workflows/test.yml/badge.svg)](https://github.com/Ubademy/ubademy.service.courses/actions/workflows/test.yml) [![Linters](https://github.com/Ubademy/ubademy.service.courses/actions/workflows/linters.yml/badge.svg)](https://github.com/Ubademy/ubademy.service.courses/actions/workflows/linters.yml) [![Deploy](https://github.com/Ubademy/ubademy.service.courses/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ubademy/ubademy.service.courses/actions/workflows/deploy.yml)
+# ubademy.gateway
+[![codecov](https://codecov.io/gh/Ubademy/ubademy.gateway/branch/master/graph/badge.svg?token=WBSG1ZXWFL)](https://codecov.io/gh/Ubademy/ubademy.gateway) [![Tests](https://github.com/Ubademy/ubademy.gateway/actions/workflows/test.yml/badge.svg)](https://github.com/Ubademy/ubademy.gateway/actions/workflows/test.yml) [![Linters](https://github.com/Ubademy/ubademy.gateway/actions/workflows/linters.yml/badge.svg)](https://github.com/Ubademy/ubademy.gateway/actions/workflows/linters.yml) [![Deploy](https://github.com/Ubademy/ubademy.gateway/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ubademy/ubademy.gateway/actions/workflows/deploy.yml)
 
-This is a template repository for a REST api on python.
+This is a gateway. It handles and routes requests to different microservices.
 
 ## Technologies
 
 * [FastAPI](https://fastapi.tiangolo.com/)
-* [SQLAlchemy](https://www.sqlalchemy.org/)
 * [Poetry](https://python-poetry.org/)
 * [Docker](https://www.docker.com/)
 * [Heroku](https://www.heroku.com/)
 
 ## Architecture
 
-Directory structure (based on [Onion Architecture](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/)):
-
 ```tree
 ├── main.py
 ├── app
-│   ├── domain
-│   │   └── course
-│   │       ├── course.py  # Entity
-│   │       ├── course_exception.py  # Exception definitions
-│   │       └── course_repository.py  # Repository interface
-│   ├── infrastructure
-│   │   └── sqlite
-│   │       ├── course
-│   │       │   ├── course_dto.py  # DTO using SQLAlchemy
-│   │       │   ├── course_query_service.py  # Query service implementation
-│   │       │   └── course_repository.py  # Repository implementation
-│   │       └── database.py
-│   ├── presentation
-│   │   └── schema
-│   │       └── course
-│   │           └── course_error_message.py
-│   └── usecase
-│       └── course
-│           ├── course_command_model.py  # Write models including schemas of the RESTFul API
-│           ├── course_command_usecase.py
-│           ├── course_query_model.py  # Read models including schemas
-│           ├── course_query_service.py  # Query service interface
-│           └── course_query_usecase.py
+│   ├── router
+│   │   ├── router.py
+│   │   └── router_exception.py
+│   └── service_caller
+│       └── service_caller.py
 └── tests
 ```
 
-## Run
+## Build docker image
 ``` bash
-docker-compose build
-
-docker-compose up
+make build
 ```
 
-Access api swagger at: http://127.0.0.1:8000/docs#/
+## Run with docker
+``` bash
+docker run -p 8000:8000 --env MICROSERVICES=<microservices_dict>
+```
+Where <microservices_dict> is a dictionary like: '{"service":"service_url"}'
+
 
 ## Tests
 ``` bash

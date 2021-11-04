@@ -15,8 +15,7 @@ update:
 	$(POETRY) update
 	$(POETRY_EXPORT)
 
-test: install  
-	$(MYPY) main.py ./${PACKAGE}/
+test: install
 	$(PYTEST) -vv
 
 fmt:
@@ -26,5 +25,5 @@ fmt:
 lint:
 	$(PYLINT) main.py ./${PACKAGE}
 
-dev:
-	${UVICORN} main:app --reload
+build:
+	docker build . -t ubademy.gateway
