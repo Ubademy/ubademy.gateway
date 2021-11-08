@@ -5,8 +5,8 @@ import pytest
 from app.service_caller.service_caller import ServiceCaller
 
 
-def mocked_get(url, headers, json):
-    if url == "service_1.com/service_1" and not headers and not json:
+def mocked_get(url, headers, json, params):
+    if url == "service_1.com/service_1" and not headers and not json and not params:
         return "done"
     return "error"
 
@@ -24,6 +24,7 @@ class TestServiceCaller:
         request.method = "GET"
         request.json = Mock(side_effect=mocked_async)
         request.headers = {"header_1": "value_1"}
+        request.query_params = {}
 
         caller = ServiceCaller(
             service_url="service_1.com/", path="service_1", session=session

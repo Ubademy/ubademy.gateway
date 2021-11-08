@@ -3,7 +3,7 @@ from typing import List, Optional
 
 import requests
 from requests import Session
-from starlette.datastructures import Headers
+from starlette.datastructures import Headers, QueryParams
 from starlette.requests import Request
 
 logger = logging.getLogger(__name__)
@@ -22,6 +22,16 @@ def get_headers_from_request(h: Headers) -> Optional[dict]:
     return headers
 
 
+def get_params_from_request(p: QueryParams):
+    params = {}
+    for i in p.keys():
+        params[i] = p.get(i)
+    if len(params.keys()) == 0:
+        params = None
+
+    return params
+
+
 class ServiceCaller:
     def __init__(
         self,
@@ -31,6 +41,7 @@ class ServiceCaller:
     ):
         self.headers = None
         self.data = None
+        self.params = None
         self.session = session
         self.url = service_url + path
         self.requests = {
@@ -43,6 +54,7 @@ class ServiceCaller:
     async def call_with_request(self, request: Request):
         func = self.requests.get(request.method)
         self.headers = get_headers_from_request(request.headers)
+        self.params = get_params_from_request(request.query_params)
         try:
             self.data = await request.json()
         except:
@@ -51,13 +63,21 @@ class ServiceCaller:
         return func()
 
     def get(self):
-        return self.session.get(self.url, headers=self.headers, json=self.data)
+        return self.session.get(
+            self.url, headers=self.headers, json=self.data, params=self.params
+        )
 
     def post(self):
-        return self.session.post(self.url, headers=self.headers, json=self.data)
+        return self.session.post(
+            self.url, headers=self.headers, json=self.data, params=self.params
+        )
 
     def put(self):
-        return self.session.put(self.url, headers=self.headers, json=self.data)
+        return self.session.put(
+            self.url, headers=self.headers, json=self.data, params=self.params
+        )
 
     def delete(self):
-        return self.session.delete(self.url, headers=self.headers, json=self.data)
+        return self.session.delete(
+            self.url, headers=self.headers, json=self.data, params=self.params
+        )
