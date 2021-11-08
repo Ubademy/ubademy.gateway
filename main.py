@@ -50,3 +50,13 @@ async def catch_all(request: Request, response: Response, full_path: str):
         )
 
     return service_response.json()
+
+
+@app.options(
+    "/{full_path:path}",
+    status_code=status.HTTP_200_OK,
+    tags=["gateway"],
+)
+async def options(full_path: str):
+    logger.info(full_path)
+    return "options"
