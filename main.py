@@ -4,6 +4,7 @@ import os
 from logging import config
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from starlette import status
 from starlette.requests import Request
 from starlette.responses import Response
@@ -15,6 +16,14 @@ config.fileConfig("logging.conf", disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="gateway")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 try:
     microservices = ast.literal_eval(os.environ["MICROSERVICES"])
