@@ -15,8 +15,8 @@ class Router:
     def get_service_caller(self, path: str) -> Caller:
         service_name = path.split("/")[0]
         logger.info(service_name)
-        if self.__is_special_service(service_name):
-            logger.info("Special service")
+        if self.__is_multi_service(service_name):
+            logger.info("Multi service")
             return MultiServiceCaller(
                 count=len(service_name.split(".")),
                 router=self,
@@ -33,10 +33,11 @@ class Router:
     def __is_microservice(self, name: str):
         return name in self.microservices
 
-    def __is_special_service(self, service_name):
+    def __is_multi_service(self, service_name):
         services = service_name.split(".")
-        return (
-            len(services) == 2
-            and self.__is_microservice(services[0])
-            and self.__is_microservice(services[1])
-        )
+        if len(services) < 2:
+            return False
+        for i in services:
+            if not self.__is_microservice(i):
+                return False
+        return True
