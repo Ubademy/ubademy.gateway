@@ -27,6 +27,7 @@ class ServiceCaller(Caller):
             "POST": self.post,
             "PUT": self.put,
             "DELETE": self.delete,
+            "PATCH": self.patch,
         }
 
     async def call_with_request(self, request: Request):
@@ -73,5 +74,10 @@ class ServiceCaller(Caller):
 
     def delete(self):
         return self.session.delete(
+            self.url, headers=self.headers, json=self.data, params=self.params
+        )
+
+    def patch(self):
+        return self.session.patch(
             self.url, headers=self.headers, json=self.data, params=self.params
         )

@@ -34,7 +34,7 @@ except KeyError as e:
 @app.api_route(
     "/{full_path:path}",
     status_code=status.HTTP_200_OK,
-    methods=["GET", "POST", "PUT", "DELETE"],
+    methods=["GET", "POST", "PUT", "DELETE", "PATCH"],
     tags=["gateway"],
 )
 async def catch_all(request: Request, response: Response, full_path: str):
