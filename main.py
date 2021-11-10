@@ -43,7 +43,6 @@ async def catch_all(request: Request, response: Response, full_path: str):
         router = Router(microservices=microservices)
         caller = router.get_service_caller(path=full_path)
         service_response = await caller.call_with_request(request=request)
-        response.status_code = service_response.status_code
 
     except InvalidMicroserviceError as e:
         logger.error(e)
@@ -58,7 +57,14 @@ async def catch_all(request: Request, response: Response, full_path: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
-    return service_response.json()
+    try:
+        response.status_code = service_response.status_code
+        r = service_response.json()
+    except Exception as e:
+        logger.error(e)
+        r = {}
+
+    return r
 
 
 @app.options(
