@@ -2,10 +2,16 @@ from unittest.mock import MagicMock, Mock
 
 import pytest
 
-from app.service_caller.service_caller import ServiceCaller
+from app.caller.service_caller import ServiceCaller
 
 
 def mocked_get(url, headers, json, params):
+    if url == "service_1.com/service_1" and not headers and not json and not params:
+        return "done"
+    return "error"
+
+
+def mocked_post(url, headers, json, params):
     if url == "service_1.com/service_1" and not headers and not json and not params:
         return "done"
     return "error"
@@ -30,4 +36,17 @@ class TestServiceCaller:
             service_url="service_1.com/", path="service_1", session=session
         )
         response = await caller.call_with_request(request=request)
+        assert response == "done"
+
+    @pytest.mark.asyncio
+    async def test_call_with_data_post_should_call_url(self):
+        session = MagicMock()
+        session.post = Mock(side_effect=mocked_post)
+
+        caller = ServiceCaller(
+            service_url="service_1.com/", path="service_1", session=session
+        )
+        response = await caller.call_with_data(
+            method="POST", headers={}, params={}, data={}
+        )
         assert response == "done"

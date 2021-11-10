@@ -23,6 +23,18 @@ This is a gateway. It handles and routes requests to different microservices.
 └── tests
 ```
 
+## Calling multiple services
+* Endpoint /service1.service2. ... . servicen
+* Body should be:
+
+      "methods": ["method1","method2", ... , "methodn"],
+
+      "paths": ["path1","path2", ... , "pathn"],
+
+      "params": [{"param":"value"},{"param":"value"}, ... ,{"param":"value"}]
+
+  
+
 ## Build docker image
 ``` bash
 make build
@@ -30,10 +42,11 @@ make build
 
 ## Run with docker
 ``` bash
-docker run -p 8000:8000 --env MICROSERVICES=<microservices_dict>
+docker run -p 8000:8000 --env MICROSERVICES=<microservices_dict> GOOD_HEADERS=<good_headers_list>
 ```
-Where <microservices_dict> is a dictionary like: '{"service":"service_url"}'
-
+Where: 
+* <microservices_dict> is a dictionary like: '{"service":"service_url"}'
+* <good_headers_list> is a list like: '\["good_header"\]'
 
 ## Tests
 ``` bash
