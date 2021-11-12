@@ -15,11 +15,13 @@ This is a gateway. It handles and routes requests to different microservices.
 ```tree
 ├── main.py
 ├── app
-│   ├── router
-│   │   ├── router.py
-│   │   └── router_exception.py
-│   └── service_caller
-│       └── service_caller.py
+│   ├── caller
+│   │   ├── caller.py
+│   │   ├── multi_service_caller.py
+│   │   └── service_caller.py
+│   └── router
+│       ├── router.py
+│       └── router_exception.py
 └── tests
 ```
 
