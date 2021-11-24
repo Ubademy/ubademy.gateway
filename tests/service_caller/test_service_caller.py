@@ -5,14 +5,14 @@ import pytest
 from app.caller.service_caller import ServiceCaller
 
 
-def mocked_get(url, headers, json, params):
-    if url == "service_1.com/service_1" and not headers and not json and not params:
+def mocked_get(url, headers, json):
+    if url == "service_1.com/service_1" and not headers and not json:
         return "done"
     return "error"
 
 
-def mocked_post(url, headers, json, params):
-    if url == "service_1.com/service_1" and not headers and not json and not params:
+def mocked_post(url, headers, json):
+    if url == "service_1.com/service_1" and not headers and not json:
         return "done"
     return "error"
 
