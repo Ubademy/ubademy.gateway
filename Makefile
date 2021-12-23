@@ -22,8 +22,11 @@ fmt:
 	$(ISORT) main.py ./${PACKAGE} ./tests
 	$(BLACK) main.py ./${PACKAGE} ./tests
 
-lint:
+lint: fmt
+	$(MYPY) main.py ./${PACKAGE}/
 	$(PYLINT) main.py ./${PACKAGE}
 
 build:
 	docker build . -t ubademy.gateway
+
+checks: lint test
