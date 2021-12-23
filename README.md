@@ -1,7 +1,7 @@
 # ubademy.gateway
 [![codecov](https://codecov.io/gh/Ubademy/ubademy.gateway/branch/master/graph/badge.svg?token=WBSG1ZXWFL)](https://codecov.io/gh/Ubademy/ubademy.gateway) [![Tests](https://github.com/Ubademy/ubademy.gateway/actions/workflows/test.yml/badge.svg)](https://github.com/Ubademy/ubademy.gateway/actions/workflows/test.yml) [![Linters](https://github.com/Ubademy/ubademy.gateway/actions/workflows/linters.yml/badge.svg)](https://github.com/Ubademy/ubademy.gateway/actions/workflows/linters.yml) [![Deploy](https://github.com/Ubademy/ubademy.gateway/actions/workflows/deploy.yml/badge.svg)](https://github.com/Ubademy/ubademy.gateway/actions/workflows/deploy.yml)
 
-Gateway for for [Ubademy](https://ubademy.github.io/)
+Gateway for [Ubademy](https://ubademy.github.io/)
 
 It handles and routes requests to different microservices.
 
@@ -36,7 +36,6 @@ Deployed at: [ubademy--gateway](https://ubademy--gateway.herokuapp.com/docs#) :r
 ### Dependencies:
 * [python3.9](https://www.python.org/downloads/release/python-390/) and utils
 * [Docker](https://www.docker.com/)
-* [Docker-Compose](https://docs.docker.com/compose/)
 * [Poetry](https://python-poetry.org/)
 
 Once you have installed these tools, make will take care of the rest :relieved:
